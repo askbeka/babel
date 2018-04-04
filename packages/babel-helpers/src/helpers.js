@@ -455,13 +455,13 @@ helpers.wrapNativeSuper = () => template.program.ast`
     return _sPO(o, p);
   }
   function _construct(Parent, args, Class) {
-    _construct = (typeof Reflect === "object" && Reflect.construct) ||
+    _construct = typeof Reflect !== "object" || !Reflect.construct || Reflect.construct.sham ?
       function _construct(Parent, args, Class) {
         var Constructor, a = [null];
         a.push.apply(a, args);
         Constructor = Parent.bind.apply(Parent, a);
         return _sPO(new Constructor, Class.prototype);
-      };
+      } : Reflect.construct;
     return _construct(Parent, args, Class);
   }
 
